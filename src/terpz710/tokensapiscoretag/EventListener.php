@@ -12,6 +12,7 @@ use pocketmine\player\Player;
 use pocketmine\Server;
 
 use function class_exists;
+use function number_format;
 
 use Ifera\ScoreHud\ScoreHud;
 use Ifera\ScoreHud\scoreboard\ScoreTag;
