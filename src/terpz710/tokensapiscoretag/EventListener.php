@@ -70,7 +70,7 @@ class EventListener implements Listener {
         $this->updateTag($event->getPlayer());
     }
 
-    public function onTagResolve(TagsResolveEvent $event): void {
+    public function resolve(TagsResolveEvent $event): void {
         $player = $event->getPlayer();
         $tag = $event->getTag();
 
