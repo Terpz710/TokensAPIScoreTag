@@ -50,7 +50,7 @@ class EventListener implements Listener {
         $this->updateTag($event->getPlayer());
     }
 
-    public function change(TokenBalanceChangeEvent; $event) : void{
+    public function change(TokenBalanceChangeEvent $event) : void{
         $this->updateTag($event->getPlayer());
     }
 
