@@ -14,25 +14,23 @@ use pocketmine\Server;
 use function class_exists;
 use function number_format;
 
+use terpz710\tokensapi\TokensAPI;
+
+use terpz710\event\TokenBalanceChangeEvent;
+
 use Ifera\ScoreHud\ScoreHud;
 use Ifera\ScoreHud\scoreboard\ScoreTag;
 use Ifera\ScoreHud\event\TagsResolveEvent;
 use Ifera\ScoreHud\event\PlayerTagsUpdateEvent;
 
-use terpz710\tokensapi\TokensAPI;
-
-use terpz710\tokensapi\event\AddTokenEvent;
-use terpz710\tokensapi\event\RemoveTokenEvent;
-use terpz710\tokensapi\event\SetTokenEvent;
-
 class EventListener implements Listener {
 
-    protected function updateTag(Player|string $player): void {
+    protected function updateTag(Player|string $player) : void{
         if (class_exists(ScoreHud::class)) {
             if ($player instanceof Player) {
-                $balance = TokensAPI::getInstance()->getTokenBalance($player);
+                $balance = TokensAPI::getInstance()->getTokens($player);
             } else {
-                $balance = TokensAPI::getInstance()->getTokenBalance($player);
+                $balance = TokensAPI::getInstance()->getTokens($player);
                 $player = Server::getInstance()->getPlayerExact($player);
             }
 
@@ -40,7 +38,7 @@ class EventListener implements Listener {
                 $ev = new PlayerTagsUpdateEvent(
                     $player,
                     [
-                        new ScoreTag("tokensapi.balance", number_format($balance)),
+                        new ScoreTag("tokensapi.balance", number_format((float)$balance)),
                     ]
                 );
                 $ev->call();
@@ -49,34 +47,21 @@ class EventListener implements Listener {
     }
 
     public function join(PlayerJoinEvent $event) : void{
-        $player = $event->getPlayer();
-        $api = TokensAPI::getInstance();
-
-        if (!$api->hasTokenBalance($player)) {
-            $api->createTokenBalance($player);
-        }
-        
-        $this->updateTag($player);
-    }
-
-    public function add(AddTokenEvent $event) : void{
         $this->updateTag($event->getPlayer());
     }
 
-    public function remove(RemoveTokenEvent $event) : void{
+    public function balanceChange(TokenBalanceChangeEvent $event) : void{
         $this->updateTag($event->getPlayer());
     }
 
-    public function set(SetTokenEvent $event) : void{
-        $this->updateTag($event->getPlayer());
-    }
-
-    public function resolve(TagsResolveEvent $event): void {
+    public function resolve(TagsResolveEvent $event) : void{
         $player = $event->getPlayer();
         $tag = $event->getTag();
 
-        $balance = TokensAPI::getInstance()->hasTokenBalance($player)
-            ? TokensAPI::getInstance()->getTokenBalance($player)
+        $tokens = TokensAPI::getInstance();
+
+        $balance = $tokens->hasTokenBalance($player)
+            ? $tokens->getTokens($player)
             : 0;
 
         match ($tag->getName()) {
