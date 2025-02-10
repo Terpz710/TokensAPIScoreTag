@@ -4,5 +4,4 @@ author: Terpz710
 api: 5.0.0
 main: terpz710\tokensapiscoretag\Loader
 
-depend: TokensAPI
-softdepend: ScoreHud
+softdepend: ["TokensAPI", "ScoreHud"]
