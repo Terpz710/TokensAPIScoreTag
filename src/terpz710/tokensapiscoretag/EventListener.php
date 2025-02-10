@@ -16,7 +16,7 @@ use function number_format;
 
 use terpz710\tokensapi\TokensAPI;
 
-use terpz710\event\TokenBalanceChangeEvent;
+use terpz710\tokensapi\event\TokenBalanceChangeEvent;
 
 use Ifera\ScoreHud\ScoreHud;
 use Ifera\ScoreHud\scoreboard\ScoreTag;
