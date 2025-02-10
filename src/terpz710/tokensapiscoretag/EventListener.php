@@ -16,7 +16,9 @@ use function number_format;
 
 use terpz710\tokensapi\TokensAPI;
 
-use terpz710\tokensapi\event\TokenBalanceChangeEvent;
+use terpz710\tokensapi\event\AddTokenEvent;
+use terpz710\tokensapi\event\RemoveTokenEvent;
+use terpz710\tokensapi\event\SetTokenEvent;
 
 use Ifera\ScoreHud\ScoreHud;
 use Ifera\ScoreHud\scoreboard\ScoreTag;
@@ -50,7 +52,15 @@ class EventListener implements Listener {
         $this->updateTag($event->getPlayer());
     }
 
-    public function balanceChange(TokenBalanceChangeEvent $event) : void{
+    public function add(AddTokenEvent $event) : void{
+        $this->updateTag($event->getPlayer());
+    }
+
+    public function remove(RemoveTokenEvent $event) : void{
+        $this->updateTag($event->getPlayer());
+    }
+
+    public function set(SetTokenEvent $event) : void{
         $this->updateTag($event->getPlayer());
     }
 
